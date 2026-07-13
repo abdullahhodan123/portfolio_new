@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      {% if setting.hero_image %}
+        <img class="sidebar-avatar" src="{{ setting.hero_image.url }}" alt="{{ setting.site_title }}">
+      {% endif %}
+      <div class="sidebar-name">{{ setting.site_title }}</div>
+      <div class="sidebar-role">// {{ setting.hero_title|truncatechars:34 }}</div>
+      <div class="sidebar-status"><span class="dot"></span>Available for work</div>
+    </div>
+
+    <button class="sidebar-toggle" aria-label="Toggle menu" aria-expanded="false">≡</button>
+
+    <nav class="sidebar-nav">
+      <a href="#hero"><span class="tick"></span>Home</a>
+      <a href="#skills"><span class="tick"></span>Skills</a>
+      <a href="#services"><span class="tick"></span>Services</a>
+      <a href="#projects"><span class="tick"></span>Projects</a>
+      <a href="#contact"><span class="tick"></span>Contact</a>
+    </nav>
+
+    <div class="sidebar-meta">
+      {% if setting.email %}<a href="mailto:{{ setting.email }}">{{ setting.email }}</a>{% endif %}
+      {% if setting.phone %}<span>{{ setting.phone }}</span>{% endif %}
+      {% if setting.resume %}
+        <a href="{{ setting.resume.url }}" download class="btn" style="justify-content:center; margin-top:6px;">
+          Download résumé ↓
+        </a>
+      {% endif %}
+      <div class="sidebar-socials">
+        {% if setting.github %}<a href="{{ setting.github }}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>{% endif %}
+        {% if setting.linkedin %}<a href="{{ setting.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>{% endif %}
+        {% if setting.facebook %}<a href="{{ setting.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">FB</a>{% endif %}
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- ---------- HERO ---------- -->
+    <section class="hero" id="hero">
+      <div class="hero-frame">
+        <span>SPEC SHEET / 01</span>
+        <span>{{ setting.address }}</span>
+      </div>
+
+      <h1 class="hero-title">{{ setting.hero_title }}</h1>
+      <p class="hero-subtitle">{{ setting.hero_subtitle }}</p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-solid">View projects</a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-value">{{ skills|length }}</span>
+          <span class="hero-stat-label">Skills tracked</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">{{ services|length }}</span>
+          <span class="hero-stat-label">Services offered</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">{{ projects|length }}</span>
+          <span class="hero-stat-label">Featured projects</span>
+        </div>
+      </div>
+
+      {% if setting.hero_image %}
+        <div class="hero-image-tag">
+          <img src="{{ setting.hero_image.url }}" alt="{{ setting.site_title }}">
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- ---------- SKILLS ---------- -->
+    <section class="section" id="skills">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Measured proficiency</div>
+          <h2 class="section-title">Skills</h2>
+        </div>
+        <div class="section-index">02 / 05</div>
+      </div>
+
+      <div class="skills-list">
+        {% for skill in skills %}
+          <div class="skill-row">
+            <div class="skill-name">{{ skill.name }}</div>
+            <div class="meter">
+              <div class="meter-ticks">
+                {% for i in "0123456789"|make_list %}<span></span>{% endfor %}
+              </div>
+              <div class="meter-fill" data-value="{{ skill.percentage }}" style="width:{{ skill.percentage }}%;"></div>
+            </div>
+            <div class="skill-value">{{ skill.percentage }}%</div>
+          </div>
+        {% empty %}
+          <div class="empty-state">
+            <div class="empty-state-icon">—/—</div>
+            <p class="empty-state-title">No skills logged yet</p>
+            <p class="empty-state-note">Add entries in the admin to populate this spec.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ---------- SERVICES ---------- -->
+    <section class="section" id="services">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">What I build</div>
+          <h2 class="section-title">Services</h2>
+        </div>
+        <div class="section-index">03 / 05</div>
+      </div>
+
+      <div class="services-grid">
+        {% for service in services %}
+          <div class="service-card">
+            <div class="service-icon">{{ service.icon|default:"—" }}</div>
+            <h3 class="service-title">{{ service.title }}</h3>
+            <p class="service-desc">{{ service.description }}</p>
+          </div>
+        {% empty %}
+          <div class="empty-state">
+            <div class="empty-state-icon">[ ]</div>
+            <p class="empty-state-title">No services listed yet</p>
+            <p class="empty-state-note">Add entries in the admin to populate this spec.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ---------- PROJECTS ---------- -->
+    <section class="section" id="projects">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Selected work</div>
+          <h2 class="section-title">Featured projects</h2>
+        </div>
+        <div class="section-index">04 / 05</div>
+      </div>
+
+      <div class="projects-grid">
+        {% for project in projects %}
+          <article class="project-card">
+            {% if project.image %}
+              <div class="project-image-wrap">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+              </div>
+            {% endif %}
+            <div class="project-body">
+              <h3 class="project-title">{{ project.title }}</h3>
+              <p class="project-desc">{{ project.description|truncatewords:22 }}</p>
+              <div class="project-links">
+                {% if project.github %}<a href="{{ project.github }}" target="_blank" rel="noopener">Source ↗</a>{% endif %}
+                {% if project.live %}<a href="{{ project.live }}" target="_blank" rel="noopener">Live ↗</a>{% endif %}
+              </div>
+            </div>
+          </article>
+        {% empty %}
+          <div class="empty-state">
+            <div class="empty-state-icon">◇</div>
+            <p class="empty-state-title">No featured projects yet</p>
+            <p class="empty-state-note">Mark a project as featured in the admin to show it here.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ---------- CONTACT ---------- -->
+    <section class="section" id="contact" style="border-bottom:none;">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Let's talk</div>
+          <h2 class="section-title">Contact</h2>
+        </div>
+        <div class="section-index">05 / 05</div>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-info-row">
+            <span class="contact-info-label">Email</span>
+            <span class="contact-info-value"><a href="mailto:{{ setting.email }}">{{ setting.email }}</a></span>
+          </div>
+          <div class="contact-info-row">
+            <span class="contact-info-label">Phone</span>
+            <span class="contact-info-value">{{ setting.phone }}</span>
+          </div>
+          <div class="contact-info-row">
+            <span class="contact-info-label">Address</span>
+            <span class="contact-info-value">{{ setting.address }}</span>
+          </div>
+        </div>
+
+        <form method="post" class="form-grid">
+          {% csrf_token %}
+          <div class="form-field">
+            <label for="id_name">Name</label>
+            <input type="text" id="id_name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label for="id_email">Email</label>
+            <input type="email" id="id_email" name="email" required>
+          </div>
+          <div class="form-field full">
+            <label for="id_subject">Subject</label>
+            <input type="text" id="id_subject" name="subject" required>
+          </div>
+          <div class="form-field full">
+            <label for="id_message">Message</label>
+            <textarea id="id_message" name="message" rows="5" required></textarea>
+          </div>
+          <div class="form-field full form-submit">
+            <button type="submit" class="btn btn-solid">Send message →</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>© {% now "Y" %} {{ setting.site_title }}</span>
+      <span>Built with Django</span>
+    </footer>
+
+  </main>
+</div>
+{% endblock %}

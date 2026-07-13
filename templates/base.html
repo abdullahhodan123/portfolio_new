@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ setting.site_title|default:"Portfolio" }}{% endblock %}</title>
+  <meta name="description" content="{{ setting.hero_subtitle|default:"Personal portfolio" }}">
+
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+  <script src="{% static 'scripts.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
