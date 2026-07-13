@@ -16,7 +16,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://zim.publicvm.com:5034",
+    "http://zim.publicvm.com:5035",
 ]
 
 INSTALLED_APPS = [
