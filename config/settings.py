@@ -12,11 +12,11 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "158.220.119.212",
-    "zim.publicvm.com",
+    "supto.publicvm.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://zim.publicvm.com:5035",
+    "http://supto.publicvm.com:5035",
 ]
 
 INSTALLED_APPS = [
